@@ -19,7 +19,8 @@
 
 2. Access the App
 
-- curl http://localhost:8000/pokemon/1
+- curl http://localhost:8000/pokemon/pikachu
+- curl http://localhost:8000/pokedex/1
 
 3. Access monitoring dashboards:
    - Prometheus: http://localhost:9090
