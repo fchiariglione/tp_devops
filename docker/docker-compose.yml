@@ -1,10 +1,4 @@
 services:
-  api:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile
-    ports:
-      - "8000:8000"
   prometheus:
     image: prom/prometheus:latest
     volumes:
