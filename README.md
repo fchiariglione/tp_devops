@@ -5,6 +5,10 @@
 - Docker & Docker Compose
 - kubectl & kind (or minikube)
 
+## Swagger
+
+- http://localhost:8000/docs
+
 ## Local Docker Development
 
 1. From the project root, run Docker Compose using its folder path:
