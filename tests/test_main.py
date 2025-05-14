@@ -7,11 +7,11 @@ def test_get_existing_pokemon():
     response = client.get("/pokemon/pikachu")
     assert response.status_code == 200
     data = response.json()
-    assert data["name"] == "pikachu"
+    assert data["name"]["english"] == "Pikachu"
 
 
 def test_get_nonexistent_pokemon():
-    response = client.get("/pokemon/mewtwo")
+    response = client.get("/pokemon/goku")
     assert response.status_code == 404
 
 def test_get_existing_pokedex():
