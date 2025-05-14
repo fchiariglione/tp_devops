@@ -23,7 +23,7 @@ with open(DATA_PATH) as f:
     pokemons = json.load(f)
 
 @app.get("/pokemon/{name}")
-def get_pokemon(name: str):
+def get_pokemon_by_name(name: str):
     logging.info(f"Start request for /pokemon/{name}")
     with REQUEST_LATENCY.labels(endpoint='/pokemon').time():
         for p in pokemons:
@@ -39,7 +39,7 @@ def get_pokemon(name: str):
         raise HTTPException(status_code=404, detail="Pokemon not found")
     
 @app.get("/pokedex/{id}")
-def get_pokemon(id: int):
+def get_pokemon_by_pokedex_nro(id: int):
     logging.info(f"Start request for /pokedex/{id}")
     with REQUEST_LATENCY.labels(endpoint='/pokedex').time():
         for p in pokemons:
@@ -50,7 +50,7 @@ def get_pokemon(id: int):
                 logging.info(f"End request for /pokedex/{id} with 200")
                 return response
         REQUEST_COUNT.labels(method='GET', endpoint='/pokedex', status_code='404').inc()
-        logging.warning(f"Pokemon {id} not found")
+        logging.warning(f"Pokemon Nro {id} not found")
         logging.info(f"End request for /pokedex/{id} with 404")
         raise HTTPException(status_code=404, detail="Pokemon not found")
 
