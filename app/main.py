@@ -37,6 +37,22 @@ def get_pokemon(name: str):
         logging.warning(f"Pokemon {name} not found")
         logging.info(f"End request for /pokemon/{name} with 404")
         raise HTTPException(status_code=404, detail="Pokemon not found")
+    
+@app.get("/pokedex/{id}")
+def get_pokemon(id: int):
+    logging.info(f"Start request for /pokedex/{id}")
+    with REQUEST_LATENCY.labels(endpoint='/pokedex').time():
+        for p in pokemons:
+            if p["id"] == id:
+                REQUEST_COUNT.labels(method='GET', endpoint='/pokedex', status_code='200').inc()
+                logging.info(f"Found pokemon {id}")
+                response = JSONResponse(content=p)
+                logging.info(f"End request for /pokedex/{id} with 200")
+                return response
+        REQUEST_COUNT.labels(method='GET', endpoint='/pokedex', status_code='404').inc()
+        logging.warning(f"Pokemon {id} not found")
+        logging.info(f"End request for /pokedex/{id} with 404")
+        raise HTTPException(status_code=404, detail="Pokemon not found")
 
 @app.get('/metrics')
 def metrics():
