@@ -1,0 +1,20 @@
+name: Build and Push to Docker Hub
+
+on:
+  push:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASS }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
+
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_USER }}/pokedexapi:latest -f docker/Dockerfile .
+
+      - name: Push image to Docker Hub
+        run: docker push ${{ secrets.DOCKER_USER }}/pokedexapi:latest
