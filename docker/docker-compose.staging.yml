@@ -1,0 +1,5 @@
+services:
+  api:
+    image: nigmata/pokedexapi:staging
+    ports:
+      - "8000:8000"
