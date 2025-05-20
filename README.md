@@ -3,7 +3,6 @@
 ## Requirements
 
 - Docker & Docker Compose
-- kubectl & kind (or minikube)
 
 ## Swagger
 
