@@ -2,26 +2,46 @@ services:
   prometheus:
     image: prom/prometheus:latest
     volumes:
-      - ../prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     ports:
       - "9090:9090"
 
   promtail:
     image: grafana/promtail:2.9.1
     volumes:
-      - /var/log:/var/log
+      - ../app/logs:/app/logs
       - ./promtail-config.yaml:/etc/promtail/config.yaml
     command: -config.file=/etc/promtail/config.yaml
+    depends_on:
+      - loki
 
   loki:
     image: grafana/loki:2.9.1
     ports:
       - "3100:3100"
-    command: -config.file=/etc/loki/local-config.yaml
+    user: "0:0"
+    volumes:
+      - loki-wal:/tmp/loki/wal
+      - loki-index:/loki/index
+      - loki-boltdb-cache:/loki/boltdb-cache
+      - loki-chunks:/loki/chunks
+      - loki-compactor:/loki/compactor
+      - ./loki-config.yaml:/etc/loki/loki-config.yaml
+    command: -config.file=/etc/loki/loki-config.yaml
 
   grafana:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
     depends_on:
       - prometheus
+      - loki
+
+volumes:
+  loki-wal:
+  loki-index:
+  loki-boltdb-cache:
+  loki-chunks:
+  loki-compactor:
