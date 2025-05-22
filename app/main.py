@@ -10,7 +10,19 @@ import os
 app = FastAPI()
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+log_dir = os.path.join(os.path.dirname(__file__), "logs")
+os.makedirs(log_dir, exist_ok=True)
+
+log_file_path = os.path.join(log_dir, "app.log")
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler(log_file_path),
+        logging.StreamHandler()
+    ]
+)
 
 REQUEST_COUNT = Counter(
     'pokemon_requests_total', 'Total HTTP requests for pokemon endpoint', ['method', 'endpoint', 'status_code']
