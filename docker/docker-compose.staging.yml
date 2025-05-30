@@ -1,5 +1,17 @@
 services:
   api:
     image: nigmata/pokedexapi:staging
+    build: 
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: build
     ports:
       - "8000:8000"
+  api-test:
+    image: nigmata/pokedexapi:staging
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: test
+    ports:
+      - "8001:8000"
