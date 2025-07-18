@@ -1,5 +1,12 @@
+
 services:
   api:
-    image: nigmata/pokedexapi:staging
+    image: nigmata/pokedexapi:latest
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: final
     ports:
       - "8000:8000"
+    environment:
+      - ENV=production

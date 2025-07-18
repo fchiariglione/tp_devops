@@ -1,9 +1,23 @@
+
 services:
   api:
+    image: nigmata/pokedexapi:dev
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    ports:
-      - "8000:8000"
+      target: final
     volumes:
       - ../app:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=development
+
+  api-test:
+    image: nigmata/pokedexapi:dev-test
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: test
+    ports:
+      - "8001:8000"
