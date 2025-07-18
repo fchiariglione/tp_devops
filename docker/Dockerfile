@@ -45,14 +45,16 @@ RUN adduser -D appuser
 WORKDIR /app
 
 # Copy installed dependencies from base
-COPY --from=base /usr/lib/python3.12/site-packages /usr/lib/python3.12/site-packages
+COPY --from=base /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 COPY --from=base /usr/local/bin /usr/local/bin
 
 # Copy the application code
 COPY app/ .
 
 # Set permissions and switch to non-root user
-RUN chown -R appuser /app
+RUN mkdir -p /app/logs && chown -R appuser /app
+RUN mkdir -p /app/logs && chown -R appuser:appuser /app/logs
+RUN chown -R appuser /app && chmod -R u+rwX /app
 USER appuser
 
 # Expose FastAPI default port
