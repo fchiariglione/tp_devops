@@ -33,7 +33,7 @@ A FastAPI-based RESTful API that provides Pokedex information with metrics, moni
 ## Prerequisites
 
 - Docker & Docker Compose
-- Python 3.13+ (for local development)
+- Python 3.12+ (for local development)
 
 ## Local Development
 
