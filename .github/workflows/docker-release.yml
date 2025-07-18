@@ -1,10 +1,9 @@
-# .github/workflows/docker-release.yml
 name: Docker Release
 
 on:
   push:
     tags:
-      - 'v*'  # Se activa con tags como v1.0.0
+      - 'v*'
 
 jobs:
   release:
@@ -16,13 +15,16 @@ jobs:
 
       - name: Extract version from tag
         id: vars
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Show extracted version
+        run: echo "Version is ${{ steps.vars.outputs.version }}"
 
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKER_PASS }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USER }}/pokedexapi:${{ env.VERSION }} -f docker/Dockerfile .
+        run: docker build -t ${{ secrets.DOCKER_USER }}/pokedexapi:${{ steps.vars.outputs.version }} -f docker/Dockerfile .
 
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USER }}/pokedexapi:${{ env.VERSION }}
+        run: docker push ${{ secrets.DOCKER_USER }}/pokedexapi:${{ steps.vars.outputs.version }}
